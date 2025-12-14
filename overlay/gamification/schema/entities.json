@@ -1,0 +1,57 @@
+{
+  "version": "1.0",
+  "description": "Entity definitions for gamification overlay.",
+  "entities": {
+    "learner": {
+      "fields": {
+        "id": "string",
+        "handle": "string",
+        "locale": "string?",
+        "visibility": { "enum": ["device", "node", "world"], "default": "device" }
+      }
+    },
+    "mentor": {
+      "fields": {
+        "id": "string",
+        "name": "string",
+        "verified": { "type": "boolean", "default": false }
+      }
+    },
+    "quest": {
+      "fields": {
+        "id": "string",
+        "title": "string",
+        "type": { "enum": ["learn", "make", "reflect", "mentor", "restore", "social"] },
+        "season": "string?",
+        "scoring": "object?",
+        "privacy_default": { "enum": ["device", "node", "world"], "default": "node" }
+      }
+    },
+    "ritual": {
+      "fields": {
+        "id": "string",
+        "title": "string",
+        "season": "string?",
+        "requires_mentor": { "type": "boolean", "default": true }
+      }
+    },
+    "artifact": {
+      "fields": {
+        "id": "string",
+        "owner_id": "string",
+        "type": { "enum": ["photo", "audio", "text", "file"] },
+        "sha256": "string",
+        "cid": "string?",
+        "visibility": { "enum": ["device", "node", "world"], "default": "device" }
+      }
+    },
+    "badge": {
+      "fields": {
+        "id": "string",
+        "title": "string",
+        "criteria": "string",
+        "tier": { "enum": ["I", "II", "III", "IV", "V"], "default": "I" }
+      }
+    }
+  }
+}

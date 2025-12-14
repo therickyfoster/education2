@@ -1,0 +1,32 @@
+{
+  "name": "gamification-framework",
+  "version": "1.0.0",
+  "description": "A modular, zero-harm gamification framework designed for planet-scale adoption, rapid customization, and infinite extensibility.",
+  "main": "src/core/engine.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/gamification-framework.git"
+  },
+  "keywords": [
+    "gamification",
+    "framework",
+    "modular",
+    "customization",
+    "extensible"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.5.0",
+    "jest": "^27.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.0",
+    "ts-jest": "^27.0.0"
+  }
+}

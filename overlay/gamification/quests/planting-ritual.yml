@@ -1,0 +1,24 @@
+id: ritual_apple_seed_001
+title: "Ritual: Seed the Orchard"
+type: restore
+season: "S1"
+est_minutes: 45
+materials: ["10x Siberian apple seeds", "water", "soil", "GPS/what3words (optional)"]
+steps:
+  - Pre-brief: 3 breaths; set intention "Feed the block."
+  - Germinate or plant using local best practice.
+  - Photo + short audio note describing place & feeling.
+  - Log GPS if safe; otherwise general area.
+outcomes:
+  - "Plant 10 seeds with care"
+  - "Record reflection (60–120s voice or 3–5 sentences)"
+evidence:
+  - photo: optional
+  - audio: optional
+  - text: required
+scoring:
+  xp: 80
+  virtues: { Stewardship: 3, Care: 2 }
+  multipliers: ["regenerative_tag"]
+privacy_default: node-only
+consent_required: ["camera","location"]

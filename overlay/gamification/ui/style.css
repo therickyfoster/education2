@@ -1,0 +1,7 @@
+body { font-family: system-ui, sans-serif; margin: 0; background:#0b1220; color:#eef2ff; }
+main { max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+.card { background:#111a2e; border:1px solid #253150; border-radius:16px; padding:1rem; margin:1rem 0; }
+h1,h2 { margin:0 0 .75rem 0; }
+textarea { width:100%; min-height:80px; margin:.5rem 0; }
+button { padding:.6rem 1rem; border-radius:10px; border:1px solid #3a4a72; background:#1a2750; color:#e6edff; cursor:pointer; }
+select, input[type=range] { width:100%; margin:.5rem 0; }

@@ -1,0 +1,47 @@
+{
+  "version": "1.0",
+  "description": "Event contracts for the gamification overlay.",
+  "events": {
+    "ReflectionLogged": {
+      "required": ["mood_before", "mood_after", "text", "timestamp"],
+      "optional": ["tags", "privacy"],
+      "constraints": {
+        "mood_before": { "type": "number", "min": 1, "max": 5 },
+        "mood_after": { "type": "number", "min": 1, "max": 5 },
+        "text": { "type": "string", "maxLength": 1000 },
+        "privacy": { "enum": ["device", "node", "world"] }
+      },
+      "effects": ["score.aether", "virtues.curiosity+1"]
+    },
+    "QuestCompleted": {
+      "required": ["quest_id", "timestamp"],
+      "optional": ["evidence_refs", "notes", "privacy"],
+      "constraints": {
+        "quest_id": { "type": "string" },
+        "evidence_refs": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },
+        "privacy": { "enum": ["device", "node", "world"] }
+      },
+      "effects": ["score.xp+=quest_base", "virtues.apply_from_quest"]
+    },
+    "RitualVerified": {
+      "required": ["ritual_id", "mentor_id", "timestamp"],
+      "optional": ["gps", "media", "notes", "privacy"],
+      "constraints": {
+        "ritual_id": { "type": "string" },
+        "mentor_id": { "type": "string" },
+        "gps": { "type": "string" },
+        "media": { "type": "array", "items": { "type": "string" }, "maxItems": 12 },
+        "privacy": { "enum": ["device", "node", "world"] }
+      },
+      "effects": ["score.xp*=ritual_bonus", "seeds+=1"]
+    },
+    "ImportedEvent": {
+      "required": ["original", "timestamp"],
+      "optional": ["note"],
+      "constraints": {
+        "original": { "type": "object" }
+      },
+      "effects": []
+    }
+  }
+}

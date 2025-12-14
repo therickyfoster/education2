@@ -1,0 +1,504 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronRight, ChevronLeft, Folder, File, FileText, Star, Heart, Zap, Shield, Trophy, Compass, Book, GraduationCap, Archive, Crown, Users, Lightbulb, Github, Share2, Download, Home, Puzzle, PenTool, CheckCircle, Eye, Play, Gift, Medal, StepForward, Wrench, ShieldCheck, AlertTriangle, Handshake } from 'lucide-react';
+
+const MMOEducationPlatform = () => {
+  // Player state
+  const [player, setPlayer] = useState({
+    name: 'Learning Apprentice',
+    class: 'Knowledge Seeker',
+    level: 1,
+    exp: 0,
+    maxExp: 100,
+    health: 100,
+    maxHealth: 100,
+    mana: 50,
+    maxMana: 50,
+    achievements: new Set(),
+    articlesRead: 0,
+    filesExplored: 0
+  });
+
+  // UI state
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [currentContent, setCurrentContent] = useState('readme');
+  const [notifications, setNotifications] = useState([]);
+  const [expandedFolders, setExpandedFolders] = useState(new Set(['education']));
+
+  // Quest state
+  const [quests, setQuests] = useState([
+    {
+      id: 'explore-regenerative',
+      title: '🌱 Explore Regenerative Learning',
+      description: 'Visit classroom tools section',
+      progress: 0,
+      maxProgress: 1,
+      reward: { exp: 50, achievement: 'explorer' }
+    },
+    {
+      id: 'understand-partnership',
+      title: '🤝 Understand AI Partnership',
+      description: 'Read about sacred partnership',
+      progress: 0,
+      maxProgress: 3,
+      reward: { exp: 75, achievement: 'collaborator' }
+    },
+    {
+      id: 'discover-sovereignty',
+      title: '👑 Discover Creative Sovereignty',
+      description: 'Learn about student authorship',
+      progress: 0,
+      maxProgress: 2,
+      reward: { exp: 100, achievement: 'scholar' }
+    }
+  ]);
+
+  const classProgression = [
+    { level: 1, name: 'Learning Apprentice', class: 'Knowledge Seeker', avatar: '🎓' },
+    { level: 3, name: 'Study Adept', class: 'Information Gatherer', avatar: '📖' },
+    { level: 5, name: 'Knowledge Weaver', class: 'Pattern Recognizer', avatar: '🧠' },
+    { level: 8, name: 'Wisdom Keeper', class: 'Insight Generator', avatar: '🔮' },
+    { level: 10, name: 'Learning Master', class: 'Knowledge Architect', avatar: '🏛️' },
+    { level: 15, name: 'Education Sage', class: 'Transformation Catalyst', avatar: '⚡' },
+    { level: 20, name: 'Planetary Teacher', class: 'Evolution Guide', avatar: '🌍' }
+  ];
+
+  const achievements = {
+    'first-visit': { name: 'First Steps', icon: '🐣', unlocked: false },
+    'explorer': { name: 'Explorer', icon: '🗺️', unlocked: false },
+    'reader': { name: 'Avid Reader', icon: '📚', unlocked: false },
+    'scholar': { name: 'Scholar', icon: '🎓', unlocked: false },
+    'curator': { name: 'Knowledge Curator', icon: '📝', unlocked: false },
+    'master': { name: 'Master Learner', icon: '👑', unlocked: false },
+    'collaborator': { name: 'Collaborator', icon: '🤝', unlocked: false },
+    'innovator': { name: 'Innovator', icon: '💡', unlocked: false }
+  };
+
+  // File tree structure
+  const fileTreeData = {
+    name: 'education',
+    type: 'folder',
+    icon: Folder,
+    children: [
+      { name: 'README.md', type: 'file', icon: FileText, content: 'readme' },
+      {
+        name: 'classroom-tools',
+        type: 'folder',
+        icon: Folder,
+        children: [
+          {
+            name: 'lesson-plans',
+            type: 'folder',
+            icon: Folder,
+            children: [
+              { name: 'starter-pack.md', type: 'file', icon: FileText, content: 'starter-pack' },
+              { name: 'ai-writing-workshop.md', type: 'file', icon: FileText, content: 'writing-workshop' },
+              { name: 'ethical-ai-discussion.md', type: 'file', icon: FileText, content: 'ethical-discussion' }
+            ]
+          },
+          {
+            name: 'project-templates',
+            type: 'folder',
+            icon: Folder,
+            children: [
+              { name: 'collaboration-scaffold.md', type: 'file', icon: FileText, content: 'collaboration' },
+              { name: 'reflection-framework.md', type: 'file', icon: FileText, content: 'reflection' }
+            ]
+          }
+        ]
+      },
+      {
+        name: 'teacher-resources',
+        type: 'folder',
+        icon: Folder,
+        children: [
+          { name: 'onboarding-guide.md', type: 'file', icon: FileText, content: 'onboarding' },
+          { name: 'ethical-framework.md', type: 'file', icon: FileText, content: 'ethics' },
+          { name: 'troubleshooting-guide.md', type: 'file', icon: FileText, content: 'troubleshooting' }
+        ]
+      }
+    ]
+  };
+
+  // Add experience points
+  const addExp = useCallback((amount, reason) => {
+    setPlayer(prev => {
+      let newExp = prev.exp + amount;
+      let newLevel = prev.level;
+      let newMaxExp = prev.maxExp;
+      
+      while (newExp >= newMaxExp) {
+        newExp -= newMaxExp;
+        newLevel++;
+        newMaxExp = Math.floor(newMaxExp * 1.5);
+      }
+      
+      const progression = classProgression.find(p => p.level <= newLevel);
+      
+      return {
+        ...prev,
+        exp: newExp,
+        level: newLevel,
+        maxExp: newMaxExp,
+        name: progression?.name || prev.name,
+        class: progression?.class || prev.class,
+        health: prev.maxHealth,
+        mana: prev.maxMana
+      };
+    });
+    
+    showNotification(`+${amount} EXP: ${reason}`, 'exp');
+  }, []);
+
+  // Show notification
+  const showNotification = (message, type = 'success') => {
+    const id = Date.now();
+    setNotifications(prev => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }, 4000);
+  };
+
+  // Grant achievement
+  const grantAchievement = (achievementId) => {
+    setPlayer(prev => {
+      const newAchievements = new Set(prev.achievements);
+      if (!newAchievements.has(achievementId)) {
+        newAchievements.add(achievementId);
+        showNotification(`🏆 Achievement Unlocked: ${achievements[achievementId].name}!`, 'achievement');
+        return { ...prev, achievements: newAchievements };
+      }
+      return prev;
+    });
+  };
+
+  // Toggle folder in file tree
+  const toggleFolder = (path) => {
+    setExpandedFolders(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(path)) {
+        newSet.delete(path);
+      } else {
+        newSet.add(path);
+      }
+      return newSet;
+    });
+  };
+
+  // Render file tree node
+  const renderFileNode = (node, path = '') => {
+    const fullPath = path ? `${path}/${node.name}` : node.name;
+    const isExpanded = expandedFolders.has(fullPath);
+    const Icon = node.icon;
+    
+    return (
+      <div key={fullPath} className="ml-2">
+        <div
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all hover:bg-white/5 hover:translate-x-1 ${
+            currentContent === node.content ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20' : ''
+          }`}
+          onClick={() => {
+            if (node.type === 'folder') {
+              toggleFolder(fullPath);
+            } else if (node.content) {
+              setCurrentContent(node.content);
+              addExp(15, 'File Discovery');
+              setPlayer(prev => ({ ...prev, filesExplored: prev.filesExplored + 1 }));
+            }
+          }}
+        >
+          {node.type === 'folder' && (
+            <ChevronRight
+              className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+            />
+          )}
+          {node.type === 'file' && <span className="w-3" />}
+          <Icon className="w-4 h-4 text-purple-400" />
+          <span className="text-sm">{node.name}</span>
+        </div>
+        {node.children && isExpanded && (
+          <div className="ml-4">
+            {node.children.map(child => renderFileNode(child, fullPath))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Content templates
+  const getContent = () => {
+    const contents = {
+      readme: (
+        <div>
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
+              AI Co-Evolution Education Platform
+            </h1>
+            <p className="text-gray-400 text-lg">A living partnership between human and artificial intelligence</p>
+          </div>
+          
+          <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                <Puzzle className="w-6 h-6 text-white" />
+              </div>
+              <h2 className="text-xl font-bold text-green-400">Collaboration Principles</h2>
+            </div>
+            <p className="text-gray-300 mb-4">
+              True collaboration between humans and AI requires intentional design. This framework ensures students remain the authors of their learning while AI serves as a thoughtful collaborator.
+            </p>
+            <h3 className="text-green-400 font-semibold mb-2">Sacred Partnership Guidelines</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>• <strong>Human sets the vision:</strong> Students define goals, values, and creative direction</li>
+              <li>• <strong>AI offers possibilities:</strong> Technology suggests, expands, and helps explore options</li>
+              <li>• <strong>Human makes choices:</strong> Final decisions always rest with the learner</li>
+              <li>• <strong>Both reflect together:</strong> Continuous evaluation of the collaborative process</li>
+            </ul>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { icon: Lightbulb, title: 'Ideation Phase', desc: 'AI helps brainstorm and expand initial ideas' },
+              { icon: PenTool, title: 'Development Phase', desc: 'AI provides feedback and alternative approaches' },
+              { icon: CheckCircle, title: 'Refinement Phase', desc: 'AI assists with editing while preserving voice' },
+              { icon: Eye, title: 'Reflection Phase', desc: 'Student and AI examine the collaborative process' }
+            ].map((item, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-white/10 transition-all cursor-pointer" onClick={() => addExp(10, 'Learning Engagement')}>
+                <item.icon className="w-8 h-8 text-purple-400 mb-2" />
+                <h3 className="font-semibold text-green-400 mb-1">{item.title}</h3>
+                <p className="text-sm text-gray-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ),
+      'starter-pack': (
+        <div>
+          <h1 className="text-3xl font-bold text-purple-400 mb-6">AI Co-Evolution Starter Pack</h1>
+          <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-4">
+            <h2 className="text-xl font-semibold text-green-400 mb-3">Lesson Overview</h2>
+            <p className="text-gray-300">
+              <strong>Grade Level:</strong> 6–12<br />
+              <strong>Duration:</strong> 2–3 weeks<br />
+              <strong>Subject:</strong> Cross-curricular
+            </p>
+          </div>
+        </div>
+      )
+    };
+    
+    return contents[currentContent] || contents.readme;
+  };
+
+  // Initialize
+  useEffect(() => {
+    grantAchievement('first-visit');
+    showNotification('Welcome to AI Co-Evolution Education! 🎓', 'success');
+  }, []);
+
+  // Periodic mana regeneration
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlayer(prev => ({
+        ...prev,
+        mana: Math.min(prev.mana + 1, prev.maxMana)
+      }));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="flex h-screen bg-gray-900 text-gray-100">
+      {/* Notifications */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {notifications.map(notif => (
+          <div
+            key={notif.id}
+            className={`px-4 py-3 rounded-lg backdrop-blur-lg animate-slide-in-right ${
+              notif.type === 'exp' ? 'bg-green-500/20 border border-green-500/50' :
+              notif.type === 'achievement' ? 'bg-purple-500/20 border border-purple-500/50' :
+              'bg-blue-500/20 border border-blue-500/50'
+            }`}
+          >
+            {notif.message}
+          </div>
+        ))}
+      </div>
+      
+      {/* Sidebar */}
+      <div className={`bg-gray-800 border-r border-gray-700 transition-all ${sidebarCollapsed ? 'w-20' : 'w-80'}`}>
+        {/* Header */}
+        <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+          {!sidebarCollapsed && <div className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">AI Co-Evolution</div>}
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+          >
+            {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </button>
+        </div>
+        
+        {!sidebarCollapsed && (
+          <>
+            {/* Player Status */}
+            <div className="p-4 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border-b border-gray-700">
+              <div className="flex justify-center mb-3">
+                <div className="relative">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-3xl">
+                    {classProgression.find(c => c.level <= player.level)?.avatar || '🎓'}
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-xs font-bold text-gray-900">
+                    {player.level}
+                  </div>
+                </div>
+              </div>
+              <div className="text-center mb-3">
+                <div className="font-bold text-green-400">{player.name}</div>
+                <div className="text-sm text-gray-400">{player.class}</div>
+              </div>
+              
+              {/* Stat Bars */}
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>⭐ EXP</span>
+                    <span>{player.exp}/{player.maxExp}</span>
+                  </div>
+                  <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-green-400 to-blue-400 transition-all"
+                      style={{ width: `${(player.exp / player.maxExp) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>❤️ Health</span>
+                    <span>{player.health}/{player.maxHealth}</span>
+                  </div>
+                  <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-red-400 to-orange-400 transition-all"
+                      style={{ width: `${(player.health / player.maxHealth) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>⚡ Focus</span>
+                    <span>{player.mana}/{player.maxMana}</span>
+                  </div>
+                  <div className="h-4 bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-blue-400 to-purple-400 transition-all"
+                      style={{ width: `${(player.mana / player.maxMana) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Achievements */}
+            <div className="p-4 border-b border-gray-700">
+              <div className="flex items-center gap-2 mb-3">
+                <Shield className="w-4 h-4 text-purple-400" />
+                <span className="font-semibold">Achievements</span>
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {Object.entries(achievements).map(([key, achievement]) => (
+                  <div
+                    key={key}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center text-lg cursor-pointer transition-all ${
+                      player.achievements.has(key)
+                        ? 'bg-gradient-to-br from-purple-500 to-blue-500 shadow-lg'
+                        : 'bg-white/5 border border-white/10 hover:bg-white/10'
+                    }`}
+                    title={achievement.name}
+                  >
+                    {achievement.icon}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Quests */}
+            <div className="p-4 border-b border-gray-700">
+              <div className="flex items-center gap-2 mb-3">
+                <Trophy className="w-4 h-4 text-yellow-400" />
+                <span className="font-semibold">Active Quests</span>
+              </div>
+              <div className="space-y-3">
+                {quests.map(quest => (
+                  <div key={quest.id} className="bg-white/5 rounded-lg p-3">
+                    <div className="text-sm font-semibold text-yellow-400 mb-1">{quest.title}</div>
+                    <div className="text-xs text-gray-400 mb-2">{quest.description}</div>
+                    <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-yellow-400 to-orange-400"
+                        style={{ width: `${(quest.progress / quest.maxProgress) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* File Tree */}
+            <div className="p-4 overflow-y-auto">
+              <div className="flex items-center gap-2 mb-3">
+                <Folder className="w-4 h-4 text-blue-400" />
+                <span className="font-semibold">Repository</span>
+              </div>
+              {renderFileNode(fileTreeData)}
+            </div>
+          </>
+        )}
+      </div>
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Nav */}
+        <div className="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-gray-400">education</span>
+            <ChevronRight className="w-3 h-3 text-gray-500" />
+            <span>{currentContent}</span>
+          </div>
+          <div className="flex gap-3">
+            <button className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg flex items-center gap-2 transition-colors">
+              <Share2 className="w-4 h-4" />
+              Share
+            </button>
+            <button className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg flex items-center gap-2 transition-colors">
+              <Download className="w-4 h-4" />
+              Download
+            </button>
+          </div>
+        </div>
+        
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto p-8">
+          {getContent()}
+        </div>
+      </div>
+      
+      <style jsx>{`
+        @keyframes slide-in-right {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        
+        .animate-slide-in-right {
+          animation: slide-in-right 0.3s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default MMOEducationPlatform;

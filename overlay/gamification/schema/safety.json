@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "description": "Zero-harm and privacy rules.",
+  "consent_gates": {
+    "camera": {
+      "prompt": "Allow camera use for evidence?",
+      "alternatives": ["text-only", "illustration", "mentor confirmation"]
+    },
+    "location": {
+      "prompt": "Allow GPS or plus code?",
+      "alternatives": ["coarse area", "mentor-confirmed only"]
+    },
+    "audio": {
+      "prompt": "Allow microphone for reflection?",
+      "alternatives": ["text reflection"]
+    }
+  },
+  "flags": {
+    "glamorize_harm": {
+      "severity": "high",
+      "action": "auto_flag -> guardian_review",
+      "description": "Content that normalizes or celebrates harm."
+    },
+    "personal_data_exposure": {
+      "severity": "medium",
+      "action": "redact -> request_consent",
+      "description": "Accidental PII without consent."
+    }
+  },
+  "limits": {
+    "daily_session_minutes": 90,
+    "reflection_bonus_cap": 0.4,
+    "daily_xp_softcap": 300,
+    "streak_loss_protection_days": 3,
+    "rest_prompt_every_minutes": 45
+  },
+  "privacy": {
+    "tiers": ["device", "node", "world"],
+    "defaults": {
+      "ReflectionLogged": "device",
+      "QuestCompleted": "node",
+      "RitualVerified": "node"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Gamification Overlay — Daily Loom</title>
+  <link rel="stylesheet" href="./style.css"/>
+  <link rel="manifest" href="./manifest.webmanifest"/>
+</head>
+<body>
+  <main>
+    <h1>Daily Loom</h1>
+
+    <section class="card">
+      <h2>Mood Check</h2>
+      <input id="mood" type="range" min="1" max="5" value="3"/>
+      <textarea id="reflect" placeholder="One sentence about how you feel…"></textarea>
+      <button id="logReflection">Log Reflection</button>
+    </section>
+
+    <section class="card">
+      <h2>Quest Deck</h2>
+      <select id="questSelect"></select>
+      <button id="completeQuest">Complete Selected Quest</button>
+    </section>
+
+    <section class="card">
+      <h2>Progress</h2>
+      <div id="stats">XP: 0 • Seeds: 0 • Streak: 0</div>
+      <button id="exportBundle">Export Progress Bundle (JSON)</button>
+      <a id="downloadLink" style="display:none;"></a>
+    </section>
+  </main>
+  <script src="../engine/scorer.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
