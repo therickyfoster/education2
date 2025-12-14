@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources Hub | AI Co-Evolution Education</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --success-gradient: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            --warning-gradient: linear-gradient(135deg, #ffa726 0%, #ffcc02 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #2d1b69 100%);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --dark-glass: rgba(0, 0, 0, 0.2);
+            --text-light: #e8e8e8;
+            --text-muted: #a0a0a0;
+            --sidebar-width: 300px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-gradient);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 20px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 40px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: var(--dark-glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-light);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            transform: scale(1.02);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .search-icon:hover {
+            color: #667eea;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-gradient);
+            transform: translateY(-2px);
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--dark-glass);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 30px 20px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            position: sticky;
+            top: 80px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 3px;
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .filter-option:hover {
+            background: var(--glass-bg);
+            color: var(--text-light);
+        }
+
+        .filter-option.active {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .filter-checkbox {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--glass-border);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .filter-checkbox:checked {
+            background: var(--accent-gradient);
+            border-color: #4facfe;
+        }
+
+        .filter-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .content-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .content-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .view-btn {
+            padding: 10px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: var(--primary-gradient);
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Resource Grid */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .resource-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .resource-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .resource-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: #667eea;
+        }
+
+        .resource-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .resource-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .resource-meta {
+            flex: 1;
+        }
+
+        .resource-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+
+        .resource-type {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .resource-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: var(--dark-glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .tag.grade {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+        }
+
+        .tag.duration {
+            background: var(--warning-gradient);
+            color: white;
+            border: none;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--glass-bg);
+            color: var(--text-light);
+            border: 1px solid var(--glass-border);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* List View */
+        .resources-list {
+            display: none;
+        }
+
+        .resources-list.active {
+            display: block;
+        }
+
+        .resource-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .resource-item:hover {
+            transform: translateX(10px);
+            border-color: #667eea;
+        }
+
+        .item-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .page-btn {
+            padding: 10px 15px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            background: var(--primary-gradient);
+            transform: scale(1.05);
+        }
+
+        .page-btn.active {
+            background: var(--primary-gradient);
+        }
+
+        /* Featured Section */
+        .featured-section {
+            background: var(--dark-glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .featured-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .featured-carousel {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .featured-item {
+            min-width: 300px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .featured-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                z-index: 999;
+                transition: left 0.3s ease;
+                background: var(--dark-glass);
+                backdrop-filter: blur(20px);
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .content-area {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                color: var(--text-light);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 15px;
+            }
+
+            .search-container {
+                margin: 0 20px;
+            }
+
+            .resources-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .resource-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .content-title {
+                font-size: 2rem;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <span>AI Education Hub</span>
+            </a>
+
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search lessons, tools, or resources..." id="searchInput">
+                <i class="fas fa-search search-icon" id="searchBtn"></i>
+            </div>
+
+            <div class="header-actions">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" style="display: none;">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="#" class="action-btn">
+                    <i class="fab fa-github"></i> Fork Repository
+                </a>
+                <a href="#" class="action-btn">
+                    <i class="fas fa-heart"></i> Support Project
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="fas fa-layer-group"></i>
+                    Resource Type
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option active">
+                        <input type="checkbox" class="filter-checkbox" checked data-filter="all">
+                        <span>All Resources</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-filter="lesson-plans">
+                        <span>Lesson Plans</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-filter="project-templates">
+                        <span>Project Templates</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-filter="reflection-prompts">
+                        <span>Reflection Prompts</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-filter="assessment-rubrics">
+                        <span>Assessment Rubrics</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-filter="teacher-guides">
+                        <span>Teacher Guides</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Grade Level
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-grade="k-2">
+                        <span>K-2</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-grade="3-5">
+                        <span>3-5</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-grade="6-8">
+                        <span>6-8</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-grade="9-12">
+                        <span>9-12</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-grade="higher-ed">
+                        <span>Higher Education</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="fas fa-clock"></i>
+                    Duration
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-duration="short">
+                        <span>1-2 Class Periods</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-duration="medium">
+                        <span>1-2 Weeks</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-duration="long">
+                        <span>1+ Months</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="fas fa-tags"></i>
+                    Topics
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-topic="ai-literacy">
+                        <span>AI Literacy</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-topic="ethics">
+                        <span>Ethics</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-topic="creative-writing">
+                        <span>Creative Writing</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-topic="critical-thinking">
+                        <span>Critical Thinking</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox" data-topic="collaboration">
+                        <span>Collaboration</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Lesson Plans</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Project Templates</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Assessment Tools</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Teacher Guides</div>
+                </div>
+            </div>
+
+            <!-- Featured Section -->
+            <div class="featured-section">
+                <div class="featured-title">
+                    <i class="fas fa-star"></i> Featured This Week
+                </div>
+                <div class="featured-carousel">
+                    <div class="featured-item">
+                        <h4>AI Manifesto Co-Creation</h4>
+                        <p>Students discover personal values through journaling and co-write manifestos with AI while preserving their authentic voice.</p>
+                        <div class="resource-tags">
+                            <span class="tag grade">6-12</span>
+                            <span class="tag duration">2-3 weeks</span>
+                        </div>
+                    </div>
+                    <div class="featured-item">
+                        <h4>Ethical AI Decision Making</h4>
+                        <p>Interactive scenarios that help students understand bias, fairness, and the ethical implications of AI systems.</p>
+                        <div class="resource-tags">
+                            <span class="tag grade">9-12</span>
+                            <span class="tag duration">1 week</span>
+                        </div>
+                    </div>
+                    <div class="featured-item">
+                        <h4>Teacher Onboarding Guide</h4>
+                        <p>Complete guide for educators new to AI integration with step-by-step instructions and best practices.</p>
+                        <div class="resource-tags">
+                            <span class="tag">Professional Development</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Header -->
+            <div class="content-header">
+                <div>
+                    <h1 class="content-title">Educational Resources</h1>
+                    <p class="content-subtitle">Comprehensive toolkit for AI-integrated learning experiences</p>
+                </div>
+                <div class="view-controls">
+                    <button class="view-btn active" id="gridViewBtn">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-btn" id="listViewBtn">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div class="resources-grid" id="resourcesGrid">
+                <!-- Lesson Plans -->
+                <div class="resource-card" data-type="lesson-plans" data-grade="6-8,9-12" data-duration="medium" data-topic="ai-literacy,creative-writing">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Manifesto Co-Creation</h3>
+                            <div class="resource-type">Lesson Plan</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Students discover personal values through journaling and co-write with AI while preserving student voice. Includes reflection on ethics, authorship, and emotional impact.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag grade">6-12</span>
+                        <span class="tag duration">2-3 weeks</span>
+                        <span class="tag">Creative Writing</span>
+                        <span class="tag">Ethics</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project Template -->
+                <div class="resource-card" data-type="project-templates" data-grade="9-12" data-duration="long" data-topic="collaboration,critical-thinking">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Research Collaboration</h3>
+                            <div class="resource-type">Project Template</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Scaffolded framework for student-AI collaboration on research projects. Includes ethical guidelines, collaboration protocols, and assessment criteria.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag grade">9-12</span>
+                        <span class="tag duration">1+ Month</span>
+                        <span class="tag">Research</span>
+                        <span class="tag">Collaboration</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-code-branch"></i> Fork
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Reflection Prompts -->
+                <div class="resource-card" data-type="reflection-prompts" data-grade="6-8,9-12" data-duration="short" data-topic="ethics,critical-thinking">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Ethics Reflection Bank</h3>
+                            <div class="resource-type">Reflection Prompts</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Collection of thought-provoking prompts to help students reflect on AI's impact on society, creativity, and human relationships.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag grade">6-12</span>
+                        <span class="tag duration">Flexible</span>
+                        <span class="tag">Ethics</span>
+                        <span class="tag">Philosophy</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Assessment Rubric -->
+                <div class="resource-card" data-type="assessment-rubrics" data-grade="3-5,6-8,9-12" data-duration="short" data-topic="ai-literacy">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Co-Creation Assessment</h3>
+                            <div class="resource-type">Assessment Rubric</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Comprehensive rubric for evaluating student work created in collaboration with AI. Focuses on critical thinking, voice authenticity, and ethical reasoning.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag grade">All Grades</span>
+                        <span class="tag">Assessment</span>
+                        <span class="tag">Rubric</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-edit"></i> Customize
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Teacher Guide -->
+                <div class="resource-card" data-type="teacher-guides" data-grade="all" data-duration="short" data-topic="ai-literacy">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Integration Onboarding</h3>
+                            <div class="resource-type">Teacher Guide</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Step-by-step guide for educators new to AI integration. Includes confidence-building exercises, ethical frameworks, and troubleshooting tips.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Professional Development</span>
+                        <span class="tag">Getting Started</span>
+                        <span class="tag">Best Practices</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-play"></i> Start Guide
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-bookmark"></i> Save
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Creative Writing Template -->
+                <div class="resource-card" data-type="project-templates" data-grade="3-5,6-8" data-duration="medium" data-topic="creative-writing,ai-literacy">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-feather-alt"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">Story Co-Creation Workshop</h3>
+                            <div class="resource-type">Project Template</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Interactive storytelling project where students collaborate with AI to create original narratives while maintaining creative control and authorship.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag grade">3-8</span>
+                        <span class="tag duration">1-2 weeks</span>
+                        <span class="tag">Creative Writing</span>
+                        <span class="tag">Storytelling</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-code-branch"></i> Fork
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Critical Thinking Lesson -->
+                <div class="resource-card" data-type="lesson-plans" data-grade="9-12,higher-ed" data-duration="short" data-topic="critical-thinking,ethics">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Bias Detection Lab</h3>
+                            <div class="resource-type">Lesson Plan</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Hands-on activity where students identify and analyze bias in AI systems. Includes real-world examples and discussion frameworks.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag grade">9-12+</span>
+                        <span class="tag duration">1-2 periods</span>
+                        <span class="tag">Critical Thinking</span>
+                        <span class="tag">Bias Analysis</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Professional Development -->
+                <div class="resource-card" data-type="teacher-guides" data-grade="all" data-duration="medium" data-topic="ai-literacy">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">PD Workshop: Zero Harm AI</h3>
+                            <div class="resource-type">Professional Development</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Ready-to-run professional development workshop focusing on emotional, cognitive, and ecological safety in AI-integrated education.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Facilitator Guide</span>
+                        <span class="tag">Workshop Materials</span>
+                        <span class="tag">Safety Protocols</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-presentation"></i> View Workshop
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-calendar-plus"></i> Schedule
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Policy Template -->
+                <div class="resource-card" data-type="teacher-guides" data-grade="all" data-duration="short" data-topic="ethics">
+                    <div class="resource-header">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="resource-meta">
+                            <h3 class="resource-title">AI Use Policy Template</h3>
+                            <div class="resource-type">Policy Template</div>
+                        </div>
+                    </div>
+                    <p class="resource-description">
+                        Customizable policy template for schools implementing AI tools. Includes ethical guidelines, safety protocols, and assessment criteria.
+                    </p>
+                    <div class="resource-tags">
+                        <span class="tag">Administrative</span>
+                        <span class="tag">Policy Development</span>
+                        <span class="tag">Institutional</span>
+                    </div>
+                    <div class="resource-actions">
+                        <a href="#" class="action-button btn-primary">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <a href="#" class="action-button btn-secondary">
+                            <i class="fas fa-edit"></i> Customize
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div class="resources-list" id="resourcesList">
+                <div class="resource-item">
+                    <div class="item-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">AI Manifesto Co-Creation</div>
+                        <div class="item-description">Students discover personal values through journaling and co-write with AI while preserving student voice.</div>
+                        <div class="item-meta">
+                            <span><i class="fas fa-graduation-cap"></i> 6-12</span>
+                            <span><i class="fas fa-clock"></i> 2-3 weeks</span>
+                            <span><i class="fas fa-tag"></i> Creative Writing, Ethics</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="#" class="action-button btn-primary">Preview</a>
+                        <a href="#" class="action-button btn-secondary">Download</a>
+                    </div>
+                </div>
+
+                <div class="resource-item">
+                    <div class="item-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">AI Research Collaboration</div>
+                        <div class="item-description">Scaffolded framework for student-AI collaboration on research projects with ethical guidelines.</div>
+                        <div class="item-meta">
+                            <span><i class="fas fa-graduation-cap"></i> 9-12</span>
+                            <span><i class="fas fa-clock"></i> 1+ Month</span>
+                            <span><i class="fas fa-tag"></i> Research, Collaboration</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="#" class="action-button btn-primary">Preview</a>
+                        <a href="#" class="action-button btn-secondary">Fork</a>
+                    </div>
+                </div>
+
+                <div class="resource-item">
+                    <div class="item-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="item-content">
+                        <div class="item-title">AI Ethics Reflection Bank</div>
+                        <div class="item-description">Collection of thought-provoking prompts about AI's impact on society and human relationships.</div>
+                        <div class="item-meta">
+                            <span><i class="fas fa-graduation-cap"></i> 6-12</span>
+                            <span><i class="fas fa-clock"></i> Flexible</span>
+                            <span><i class="fas fa-tag"></i> Ethics, Philosophy</span>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="#" class="action-button btn-primary">Preview</a>
+                        <a href="#" class="action-button btn-secondary">Download</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="page-btn"><i class="fas fa-chevron-left"></i></a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">...</a>
+                <a href="#" class="page-btn">8</a>
+                <a href="#" class="page-btn"><i class="fas fa-chevron-right"></i></a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sample data for resources
+        const resources = [
+            {
+                id: 1,
+                title: "AI Manifesto Co-Creation",
+                type: "lesson-plans",
+                description: "Students discover personal values through journaling and co-write with AI while preserving student voice.",
+                grades: ["6-8", "9-12"],
+                duration: "medium",
+                topics: ["ai-literacy", "creative-writing", "ethics"],
+                icon: "fas fa-book-open"
+            },
+            {
+                id: 2,
+                title: "AI Research Collaboration",
+                type: "project-templates",
+                description: "Scaffolded framework for student-AI collaboration on research projects with ethical guidelines.",
+                grades: ["9-12"],
+                duration: "long",
+                topics: ["collaboration", "critical-thinking"],
+                icon: "fas fa-project-diagram"
+            }
+            // Add more resources as needed
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFilters();
+            initializeSearch();
+            initializeViewToggle();
+            initializeMobileMenu();
+            animateCards();
+        });
+
+        // Filter functionality
+        function initializeFilters() {
+            const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+            
+            filterCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const parentOption = this.closest('.filter-option');
+                    
+                    if (this.checked) {
+                        parentOption.classList.add('active');
+                    } else {
+                        parentOption.classList.remove('active');
+                    }
+                    
+                    // Apply filters
+                    applyFilters();
+                });
+            });
+        }
+
+        function applyFilters() {
+            const activeFilters = {
+                types: [],
+                grades: [],
+                durations: [],
+                topics: []
+            };
+
+            // Collect active filters
+            document.querySelectorAll('.filter-checkbox:checked').forEach(checkbox => {
+                const filterType = checkbox.getAttribute('data-filter');
+                const grade = checkbox.getAttribute('data-grade');
+                const duration = checkbox.getAttribute('data-duration');
+                const topic = checkbox.getAttribute('data-topic');
+
+                if (filterType && filterType !== 'all') activeFilters.types.push(filterType);
+                if (grade) activeFilters.grades.push(grade);
+                if (duration) activeFilters.durations.push(duration);
+                if (topic) activeFilters.topics.push(topic);
+            });
+
+            // Filter resource cards
+            const resourceCards = document.querySelectorAll('.resource-card');
+            
+            resourceCards.forEach(card => {
+                let visible = true;
+
+                // Check type filter
+                if (activeFilters.types.length > 0) {
+                    const cardType = card.getAttribute('data-type');
+                    if (!activeFilters.types.includes(cardType)) visible = false;
+                }
+
+                // Check grade filter
+                if (activeFilters.grades.length > 0) {
+                    const cardGrades = card.getAttribute('data-grade')?.split(',') || [];
+                    const hasMatchingGrade = activeFilters.grades.some(grade => 
+                        cardGrades.includes(grade)
+                    );
+                    if (!hasMatchingGrade) visible = false;
+                }
+
+                // Check duration filter
+                if (activeFilters.durations.length > 0) {
+                    const cardDuration = card.getAttribute('data-duration');
+                    if (!activeFilters.durations.includes(cardDuration)) visible = false;
+                }
+
+                // Check topic filter
+                if (activeFilters.topics.length > 0) {
+                    const cardTopics = card.getAttribute('data-topic')?.split(',') || [];
+                    const hasMatchingTopic = activeFilters.topics.some(topic => 
+                        cardTopics.includes(topic)
+                    );
+                    if (!hasMatchingTopic) visible = false;
+                }
+
+                // Show/hide card
+                if (visible) {
+                    card.style.display = 'block';
+                    card.classList.add('animate-in');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+
+            function performSearch() {
+                const query = searchInput.value.toLowerCase();
+                const resourceCards = document.querySelectorAll('.resource-card');
+
+                resourceCards.forEach(card => {
+                    const title = card.querySelector('.resource-title').textContent.toLowerCase();
+                    const description = card.querySelector('.resource-description').textContent.toLowerCase();
+                    const tags = Array.from(card.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase());
+
+                    const matches = title.includes(query) || 
+                                  description.includes(query) || 
+                                  tags.some(tag => tag.includes(query));
+
+                    if (matches || query === '') {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', performSearch);
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+
+        // View toggle functionality
+        function initializeViewToggle() {
+            const gridViewBtn = document.getElementById('gridViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const resourcesGrid = document.getElementById('resourcesGrid');
+            const resourcesList = document.getElementById('resourcesList');
+
+            gridViewBtn.addEventListener('click', function() {
+                gridViewBtn.classList.add('active');
+                listViewBtn.classList.remove('active');
+                resourcesGrid.style.display = 'grid';
+                resourcesList.classList.remove('active');
+            });
+
+            listViewBtn.addEventListener('click', function() {
+                listViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                resourcesGrid.style.display = 'none';
+                resourcesList.classList.add('active');
+            });
+        }
+
+        // Mobile menu functionality
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+
+            // Close sidebar when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        }
+
+        // Animate cards on scroll
+        function animateCards() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '50px'
+            });
+
+            document.querySelectorAll('.resource-card, .resource-item').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Add loading states for actions
+        document.querySelectorAll('.action-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                this.style.pointerEvents = 'none';
+
+                // Simulate loading
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.style.pointerEvents = 'auto';
+                    
+                    // Show success message
+                    showNotification('Action completed successfully!', 'success');
+                }, 1500);
+            });
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--glass-bg);
+                backdrop-filter: blur(20px);
+                border: 1px solid var(--glass-border);
+                border-radius: 10px;
+                padding: 15px 20px;
+                color: var(--text-light);
+                z-index: 9999;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects to resource cards
+        document.querySelectorAll('.resource-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
